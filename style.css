@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.cdnfonts.com/css/calculator");
+
+/*#region Variables */
+:root {
+  --ff-primary: "Nunito", sans-serif;
+  --ff-secondary: "Calculator", sans-serif;
+  /* Color variables starts here */
+  --clr-dark-bg-01: #1e1e1e;
+  --clr-dark-bg-02: #525252;
+  --clr-dark-bg-03: #2d2d2d;
+  --clr-dark-bg-04: #828282;
+
+  --clr-light-text-01: #ffffff;
+  --clr-light-text-02: #c4c4c4;
+  /* Color variables ends here */
+}
+/*#endregion Varaibles */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--clr-dark-bg-01);
+}
+
+.container {
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  background: var(--clr-dark-bg-02);
+}
+
+.display {
+  height: 80px;
+  width: 100%;
+  padding-inline: 1rem;
+  margin-bottom: 1.5rem;
+  font-family: var(--ff-secondary);
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: right;
+
+  color: var(--clr-dark-bg-03);
+  background: var(--clr-dark-bg-04);
+
+  border: 6px solid var(--clr-dark-bg-03);
+  border-radius: 8px;
+  outline: none;
+  pointer-events: none;
+}
+
+.buttons {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.buttons button {
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: var(--clr-dark-bg-04);
+  color: var(--clr-light-text-01);
+  font-weight: 600;
+  transition: transform 0.1s;
+}
+
+.buttons button:active {
+  transform: scale(0.95);
+}
+
+.operator {
+  color: var(--clr-light-text-02) !important;
+  background: var(--clr-dark-bg-03) !important;
+}
