@@ -1,11 +1,13 @@
 const display = document.querySelector(".display");
 const buttons = document.querySelectorAll("button");
 const specialChars = ["%", "*", "/", "-", "+", "="];
+
 let output = "";
 let memory = "";
 let mrcClickCount = 0;
 let decimalClicked = false;
 
+// To limit the output's decimal places
 const formatNumber = (num) => {
   const numString = num.toString();
   if (numString.length > 12) {
@@ -14,6 +16,33 @@ const formatNumber = (num) => {
   return numString;
 };
 
+const decimalToBinary = (num) => {
+  let binaryRepresentation;
+
+  if (Number.isInteger(num)) {
+    binaryRepresentation = (Math.abs(num) >>> 0).toString(2);
+  } else {
+    let integerPart = Math.floor(Math.abs(num));
+    let decimalPart = Math.abs(num) - integerPart;
+    let binaryIntegerPart = (integerPart >>> 0).toString(2);
+    let binaryDecimalPart = "";
+
+    while (decimalPart > 0) {
+      decimalPart *= 2;
+      binaryDecimalPart += Math.floor(decimalPart).toString();
+      decimalPart -= Math.floor(decimalPart);
+    }
+
+    binaryRepresentation =
+      (num < 0 ? "-" : "") +
+      binaryIntegerPart +
+      (binaryDecimalPart !== "" ? "." + binaryDecimalPart : "");
+  }
+
+  return binaryRepresentation;
+};
+
+// Main operation
 const calculate = (btnValue) => {
   display.focus();
 
@@ -21,6 +50,7 @@ const calculate = (btnValue) => {
     return;
   }
 
+  // To check whether an operator is clicked
   const lastCharIsOperator = specialChars.includes(
     output.charAt(output.length - 1)
   );
@@ -33,7 +63,19 @@ const calculate = (btnValue) => {
   } else if (btnValue === "DEL") {
     output = formatNumber(output.toString().slice(0, -1));
   } else if (btnValue === "BIN") {
-    output = formatNumber((output >>> 0).toString(2));
+    if (output !== "") {
+      let num = parseFloat(eval(output));
+      let binaryRepresentation = decimalToBinary(num);
+
+      console.log(`Binary: ${binaryRepresentation}`);
+      if (binaryRepresentation.length > 22) {
+        output = "Error: Number too large";
+      } else {
+        output = binaryRepresentation;
+      }
+
+      decimalClicked = false;
+    }
   } else if (specialChars.includes(btnValue)) {
     if (!lastCharIsOperator) {
       if (btnValue !== ".") {
@@ -44,13 +86,17 @@ const calculate = (btnValue) => {
   } else if (btnValue === "M+") {
     memory = eval(memory + parseFloat(eval(output)));
     decimalClicked = false;
+    console.log(`Memory: ${memory}`);
   } else if (btnValue === "M-") {
     memory = eval(memory - parseFloat(eval(output)));
     decimalClicked = false;
+    console.log(`Memory: ${memory}`);
   } else if (btnValue === "MC") {
     memory = "";
+    console.log(`Memory: ${memory}`);
   } else if (btnValue === "MR") {
     output += memory;
+    console.log(`Memory: ${memory}`);
   } else if (btnValue === ".") {
     if (!decimalClicked) {
       output += btnValue;
@@ -61,7 +107,6 @@ const calculate = (btnValue) => {
   }
 
   display.value = output;
-  console.log(memory + typeof memory);
 };
 
 buttons.forEach((button) => {
